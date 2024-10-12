@@ -1,13 +1,15 @@
 จากโจทย์ในไฟล์ Instruction Kinematics HW 3.html
-แนวคิดในการแก้โจทย์
+# แนวคิดในการแก้โจทย์
 
 <img width="806" alt="Screenshot 2567-10-12 at 23 23 14" src="https://github.com/user-attachments/assets/ab610409-e9f6-4ba5-a3c2-584c56234b21">
 
-คำถามข้อที่ 1: จงเขียนฟังก์ชันในการ Jacobian ของหุ่นยนต์ตัวนี้ให้อยู่ในฟังก์ชั่นต่อไปนี้
+## คำถามข้อที่ 1: จงเขียนฟังก์ชันในการ Jacobian ของหุ่นยนต์ตัวนี้ให้อยู่ในฟังก์ชั่นต่อไปนี้
+
 J_e = endEffectorJacobianHW3(q) //การหา Jacobian ของ end-effector ที่ reference frame 0
 
 <img width="799" alt="Screenshot 2567-10-12 at 23 49 05" src="https://github.com/user-attachments/assets/42078acf-3c62-43ce-993c-135dea4d469b">
 
+```python
 def endEffectorJacobianHW3(q:list[float])->list[float]:
 
     R,P,R_e,p_e = HW3_utils.FKHW3(q)
@@ -60,13 +62,16 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
                   w_ze_q1, w_ze_q2, w_ze_q3]).reshape(6,3)
     
     return J
-
-Prove คำตอบของคำถามข้อที่ 1 โดยเปรียบเทียบกับ Jacobian ที่ได้จาก Roboticstoolbox
+```
+## Prove คำตอบของคำถามข้อที่ 1 โดยเปรียบเทียบกับ Jacobian ที่ได้จาก Roboticstoolbox
 
 เริ่มจากการสร้างหุ่นยนต์ด้วย Roboticstoolbox ดังนี้
+
 ![image](https://github.com/user-attachments/assets/d859a8f9-7653-43cb-8db8-6b8c6d73a63c)
 
 จากนั้นเขียนโปรแกรมเพื่อเปรียบเทียบค่า Jacobian ที่ได้จากฟังก์ชัน robot.jacob0(q) กับ Jacobian ที่ได้จากฟังก์ชัน endEffectorJacobianHW3(q)
+
+```python
 # Define the joint angles (q) for prove
 q = [np.pi/4, np.pi/6, np.pi/3]
 
@@ -138,21 +143,30 @@ if np.isclose(determinant, 0, atol=0.001):
     print("singularity\n")
 else:
     print("not singularity\n")
+```
+## Prove คำตอบของคำถามข้อที่ 2 โดยเปรียบเทียบกับการใช้ Jacobian ที่ได้จาก Roboticstoolbox จะได้ผลลัพธ์คือ
 
-Prove คำตอบของคำถามข้อที่ 2 โดยเปรียบเทียบกับการใช้ Jacobian ที่ได้จาก Roboticstoolbox จะได้ผลลัพธ์คือ
 ![image](https://github.com/user-attachments/assets/fd0946b3-39d7-4962-9458-b0efb3faf589)
+
 จะเห็นได้ว่ามีผลลัพธ์ที่เหมือนกัน จึงสามารถสรุปได้ว่าฟังก์ชัน checkSingularityHW3(q) สามารถหาสภาวะ Singularity ของหุ่นยนต์ได้
 ----------------------------------------------------------------------------------------------------------------------------------------
-คำถามข้อที่ 3: เขียนฟังก์ชันในการหา effort ของแต่ละข้อต่อเมื่อมี wrench มากระทำกับจุดกึ่งกลางของเฟรมพิกัด Fe
+## คำถามข้อที่ 3: เขียนฟังก์ชันในการหา effort ของแต่ละข้อต่อเมื่อมี wrench มากระทำกับจุดกึ่งกลางของเฟรมพิกัด Fe
+
 tau = computeEffortHW3(q,w)
+
 จากสมการ
   τ = computeEffort(q,w)
+  
 โดยที่
   tau เป็นเวกเตอร์หลักของ double ที่มีขนาดเท่ากับ 3 ที่แสดงถึงค่า Effort ของแต่ละข้อต่อ
   q เป็นเวกเตอร์หลักของ double ที่มีขนาดเท่ากับ 3 ที่แสดงถึง configuration ของหุ่นยนต์ (Joint Configuration)
   w เป็นเวกเตอร์หลักของ double ที่มีขนาดเท่ากับ 6 ที่แสดงโมเมนท์และแรงที่อ้างอิงกับเฟรมพิกัด Fe
+  
 ซึ่งการจะหา torque ได้นั้น Jacobian และ w ต้องมี reference frame เดียวกัน ซึ่งเราจะยึดตาม frame ของ Jacobian จึงต้องคูณ Rotation matrix ที่ frame e โดยอ้างอิง frame 0 จะได่้
+
 ![image](https://github.com/user-attachments/assets/ccd1d687-48e9-47d3-84af-f03bf3fe3e7f)
+
+```python
 def computeEffortHW3(q:list[float], w:list[float])->list[float]:
     J = endEffectorJacobianHW3(q)
     J_transposed = np.transpose(J)
@@ -172,13 +186,15 @@ def computeEffortHW3(q:list[float], w:list[float])->list[float]:
     tau = J_transposed @ w_0
 
     return tau
+```
+## Prove คำตอบของคำถามข้อที่ 3 โดยเปรียบเทียบกับ Jacobian ที่ได้จาก Roboticstoolbox
 
-Prove คำตอบของคำถามข้อที่ 3 โดยเปรียบเทียบกับ Jacobian ที่ได้จาก Roboticstoolbox
 เริ่มจากการกำหนดค่าให้กับ q และ w
   q = [0,math.pi/2,0]
   w = [5,10,0,0,1,0]
+  
 จากนั้นเขียนโปรแกรมเพื่อเปรียบเทียบค่า torque ที่ได้จากฟังก์ชัน jacobe(q) กับ torque ที่ได้จากฟังก์ชัน computeEffortHW3(q, w)
+
 ![image](https://github.com/user-attachments/assets/e1504a81-7476-4f55-9c81-03d942bb628f)
+
 จะเห็นได้ว่าเมื่อนำคำตอบมาเปรียบเทียบกันแล้วพบว่าค่าที่ได้เหมือนกัน จึงสามารถ Proove ได้ว่า torque ที่ได้จากฟังก์ชัน computeEffortHW3(q, w) ถูกต้อง
-
-
