@@ -80,7 +80,6 @@ def FKHW3(q):
 # print('P : ', P)
 
 # print('R_e : ', R_e)
-# print('')
 # print('P_e : ', p_e)
 # print('R[:,:,0]: ', R[:,:,0])
 

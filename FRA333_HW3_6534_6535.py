@@ -27,10 +27,12 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
 
     [q1,q2,q3] = q
 
+    # Calculate Jacobian relative to the base frame (0)
     Pe_P1 = [p_e[0]-P[0][0], p_e[1]-P[1][0], p_e[2]-P[2][0]]
     Pe_P2 = [p_e[0]-P[0][1], p_e[1]-P[1][1], p_e[2]-P[2][1]]
     Pe_P3 = [p_e[0]-P[0][2], p_e[1]-P[1][2], p_e[2]-P[2][2]]
 
+    # Define z1 z2 z3 reference from frame 0
     z1 = [0, 0, 1]
     z2 = [-math.sin(q1), math.cos(q1), 0]
     z3 = [-math.sin(q1), math.cos(q1), 0]
@@ -39,6 +41,7 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     z2_cross_PeP2 = cos_vector(z2, Pe_P2)
     z3_cross_PeP3 = cos_vector(z3, Pe_P3)
 
+    # Fist column of Jacobian
     v_xe_q1 = z1_cross_PeP1[0]
     v_ye_q1 = z1_cross_PeP1[1]
     v_ze_q1 = z1_cross_PeP1[2]
@@ -46,6 +49,7 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     w_ye_q1 = z1[1]
     w_ze_q1 = z1[2]
 
+    # Second column of Jacobian
     v_xe_q2 = z2_cross_PeP2[0]
     v_ye_q2 = z2_cross_PeP2[1]
     v_ze_q2 = z2_cross_PeP2[2]
@@ -53,6 +57,7 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     w_ye_q2 = z2[1]
     w_ze_q2 = z2[2]
 
+    # Third column of Jacobian
     v_xe_q3 = z3_cross_PeP3[0]
     v_ye_q3 = z3_cross_PeP3[1]
     v_ze_q3 = z3_cross_PeP3[2]
