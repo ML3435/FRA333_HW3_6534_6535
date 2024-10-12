@@ -155,11 +155,14 @@ else:
 tau = computeEffortHW3(q,w)
 
 จากสมการ
+
   τ = computeEffort(q,w)
   
 โดยที่
   tau เป็นเวกเตอร์หลักของ double ที่มีขนาดเท่ากับ 3 ที่แสดงถึงค่า Effort ของแต่ละข้อต่อ
+  
   q เป็นเวกเตอร์หลักของ double ที่มีขนาดเท่ากับ 3 ที่แสดงถึง configuration ของหุ่นยนต์ (Joint Configuration)
+  
   w เป็นเวกเตอร์หลักของ double ที่มีขนาดเท่ากับ 6 ที่แสดงโมเมนท์และแรงที่อ้างอิงกับเฟรมพิกัด Fe
   
 ซึ่งการจะหา torque ได้นั้น Jacobian และ w ต้องมี reference frame เดียวกัน ซึ่งเราจะยึดตาม frame ของ Jacobian จึงต้องคูณ Rotation matrix ที่ frame e โดยอ้างอิง frame 0 จะได่้
@@ -190,10 +193,29 @@ def computeEffortHW3(q:list[float], w:list[float])->list[float]:
 ## Prove คำตอบของคำถามข้อที่ 3 โดยเปรียบเทียบกับ Jacobian ที่ได้จาก Roboticstoolbox
 
 เริ่มจากการกำหนดค่าให้กับ q และ w
+
 q = [0,math.pi/2,0]
+
 w = [5,10,0,0,1,0]
   
 จากนั้นเขียนโปรแกรมเพื่อเปรียบเทียบค่า torque ที่ได้จากฟังก์ชัน jacobe(q) กับ torque ที่ได้จากฟังก์ชัน computeEffortHW3(q, w)
+
+```python
+# Calculate torques using computeEffortHW3 function
+torque = HW3.computeEffortHW3(q, w)
+print("Torque From computeEffortHW3 function:")
+print(torque) # แรงปฏิกิริยาที่ข้อต่อออก เพื่อต้านแรงภายนอกให้เกิดสมดุล
+print()
+
+# Compute Jacobian reference form end-effector
+j = robot.jacobe(q) 
+
+# Calculate torques using Robotics Toolbox
+tau_rtb = robot.pay(w, J=j, frame=1) # torque ภายนอกที่มากระทำกับแต่ละข้อต่อ
+print("Torque From Robotics Toolboxt: ")
+print(-tau_rtb) # เติมลบ เพื่อให้ได้แรงปฏิกิริยาที่ข้อต่อต้านแรงภายนอกให้เกิดสมดุล
+```
+จะได้ผลลัพธ์คือ
 
 ![image](https://github.com/user-attachments/assets/e1504a81-7476-4f55-9c81-03d942bb628f)
 
