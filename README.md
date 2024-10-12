@@ -190,8 +190,8 @@ def computeEffortHW3(q:list[float], w:list[float])->list[float]:
 ## Prove คำตอบของคำถามข้อที่ 3 โดยเปรียบเทียบกับ Jacobian ที่ได้จาก Roboticstoolbox
 
 เริ่มจากการกำหนดค่าให้กับ q และ w
-  q = [0,math.pi/2,0]
-  w = [5,10,0,0,1,0]
+q = [0,math.pi/2,0]
+w = [5,10,0,0,1,0]
   
 จากนั้นเขียนโปรแกรมเพื่อเปรียบเทียบค่า torque ที่ได้จากฟังก์ชัน jacobe(q) กับ torque ที่ได้จากฟังก์ชัน computeEffortHW3(q, w)
 
