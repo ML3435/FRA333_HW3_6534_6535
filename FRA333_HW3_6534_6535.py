@@ -105,6 +105,7 @@ def computeEffortHW3(q:list[float], w:list[float])->list[float]:
 
     R,P,R_e,p_e = HW3_utils.FKHW3(q)
 
+    # Transform w from the base frame (frame 0) to the end-effector frame.
     f_e = w[:3]
     n_e = w[3:]
 
@@ -113,6 +114,7 @@ def computeEffortHW3(q:list[float], w:list[float])->list[float]:
 
     w_0 = np.hstack((f_0, n_0)).reshape(6, 1)
 
+    # calculate torque
     tau = J_transposed @ w_0
 
     return tau
