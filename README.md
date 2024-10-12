@@ -92,16 +92,17 @@ if np.allclose(J_sol, jacobian_toolbox, atol=1e-6):
     print("The two Jacobians are very close.\n")
 else:
     print("The two Jacobians are different.\n")
-
+```
 จะได้
 ![image](https://github.com/user-attachments/assets/f55ebf5f-dfa1-4c8e-b180-6ba81de25273)
 
 ซึ่งเมื่อนำคำตอบมาเปรียบเทียบกันแล้วพบว่าเหมือนกัน จึงสามารถ Proove ได้ว่า Jacobian ของ end-effector ที่ reference frame 0 ที่ได้จากฟังก์ชัน endEffectorJacobianHW3(q) ถูกต้อง
 ----------------------------------------------------------------------------------------------------------------------------------------
-คำถามข้อที่ 2: จงเขียนฟังก์ชันในการหาสภาวะ Singularity ด้วยสมการ ∣∣det(J*(q))∣∣<ε โดยที่ค่า ε มีค่า 0.001 และ J*(⋅) คือเมตริกซ์จาโคเบียนที่ถูกลดรูปแล้ว
+## คำถามข้อที่ 2: จงเขียนฟังก์ชันในการหาสภาวะ Singularity ด้วยสมการ ∣∣det(J*(q))∣∣<ε โดยที่ค่า ε มีค่า 0.001 และ J*(⋅) คือเมตริกซ์จาโคเบียนที่ถูกลดรูปแล้ว
 flag = checkSingularityHW3(q)
 โดยที่  flag ∈ 0,1 เป็น scalar ที่มีค่าเท่ากับ 1 ก็ต่อเมื่ออยู่ตำแหน่งใกล้สภาวะ Singularity หรือมีค่าเท่ากับ 0 เมื่อแขนกลอยู่ในสภาวะปกติ
-      
+
+```python
 # check case of singularity
 print("------check case of singularity-------")
 q = [0,-np.pi/2 - 0.1,0] # Define q that make robot be singularity
