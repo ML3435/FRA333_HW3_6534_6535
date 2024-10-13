@@ -93,7 +93,9 @@ if np.allclose(J_sol, jacobian_toolbox, atol=1e-6):
 else:
     print("The two Jacobians are different.\n")
 ```
+
 จะได้
+
 ![image](https://github.com/user-attachments/assets/f55ebf5f-dfa1-4c8e-b180-6ba81de25273)
 
 ซึ่งเมื่อนำคำตอบมาเปรียบเทียบกันแล้วพบว่าเหมือนกัน จึงสามารถ Prove ได้ว่า Jacobian ของ end-effector ที่ reference frame 0 ที่ได้จากฟังก์ชัน endEffectorJacobianHW3(q) ถูกต้อง
