@@ -7,7 +7,7 @@
 
 J_e = endEffectorJacobianHW3(q) //การหา Jacobian ของ end-effector ที่ reference frame 0
 
-<img width="799" alt="Screenshot 2567-10-12 at 23 49 05" src="https://github.com/user-attachments/assets/42078acf-3c62-43ce-993c-135dea4d469b">
+<img width="891" alt="Screenshot 2567-10-13 at 12 30 53" src="https://github.com/user-attachments/assets/e74c3edc-0409-4168-8a55-7e704f0dbfdf">
 
 ```python
 def endEffectorJacobianHW3(q:list[float])->list[float]:
