@@ -3,7 +3,7 @@
 
 <img width="806" alt="Screenshot 2567-10-12 at 23 23 14" src="https://github.com/user-attachments/assets/ab610409-e9f6-4ba5-a3c2-584c56234b21">
 
-## คำถามข้อที่ 1: จงเขียนฟังก์ชันในการ Jacobian ของหุ่นยนต์ตัวนี้ให้อยู่ในฟังก์ชั่นต่อไปนี้
+## คำถามข้อที่ 1: จงเขียนฟังก์ชันในการ Jacobian ของหุ่นยนต์ให้อยู่ในฟังก์ชั่นต่อไปนี้
 
 J_e = endEffectorJacobianHW3(q) //การหา Jacobian ของ end-effector ที่ reference frame 0
 
@@ -63,7 +63,7 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     
     return J
 ```
-## Prove คำตอบของคำถามข้อที่ 1 โดยเปรียบเทียบกับ Jacobian ที่ได้จาก Roboticstoolbox
+## Prove คำตอบของคำถามข้อที่ 1 โดยเปรียบเทียบกับ Jacobian ที่คำนวณจาก Roboticstoolbox
 
 เริ่มจากการสร้างหุ่นยนต์ด้วย Roboticstoolbox ดังนี้
 
@@ -96,11 +96,43 @@ else:
 จะได้
 ![image](https://github.com/user-attachments/assets/f55ebf5f-dfa1-4c8e-b180-6ba81de25273)
 
-ซึ่งเมื่อนำคำตอบมาเปรียบเทียบกันแล้วพบว่าเหมือนกัน จึงสามารถ Proove ได้ว่า Jacobian ของ end-effector ที่ reference frame 0 ที่ได้จากฟังก์ชัน endEffectorJacobianHW3(q) ถูกต้อง
+ซึ่งเมื่อนำคำตอบมาเปรียบเทียบกันแล้วพบว่าเหมือนกัน จึงสามารถ Prove ได้ว่า Jacobian ของ end-effector ที่ reference frame 0 ที่ได้จากฟังก์ชัน endEffectorJacobianHW3(q) ถูกต้อง
+
 ----------------------------------------------------------------------------------------------------------------------------------------
-## คำถามข้อที่ 2: จงเขียนฟังก์ชันในการหาสภาวะ Singularity ด้วยสมการ ∣∣det(J*(q))∣∣<ε โดยที่ค่า ε มีค่า 0.001 และ J*(⋅) คือเมตริกซ์จาโคเบียนที่ถูกลดรูปแล้ว
+## คำถามข้อที่ 2: จงเขียนฟังก์ชันในการหาสภาวะ Singularity ของหุ่นยนต์ให้อยู่ในฟังก์ชั่นต่อไปนี้
 flag = checkSingularityHW3(q)
 โดยที่  flag ∈ 0,1 เป็น scalar ที่มีค่าเท่ากับ 1 ก็ต่อเมื่ออยู่ตำแหน่งใกล้สภาวะ Singularity หรือมีค่าเท่ากับ 0 เมื่อแขนกลอยู่ในสภาวะปกติ
+
+จากโจทย์กำหนดให้หุ่นยนต์อยู่ในสภาวะ Sigularity ก็ต่อเมื่อ
+∣∣det(J*(q))∣∣<ε 
+โดยที่ค่า ε มีค่า 0.001 และ J*(⋅) คือเมตริกซ์จาโคเบียนที่ถูกลดรูปแล้ว
+
+```python
+def checkSingularityHW3(q:list[float])->bool:
+
+    J = endEffectorJacobianHW3(q)
+
+    # reduce jacobian
+    J_3x3 = J[:3, :]
+    
+    # Calculate the determinant of J
+    det_J = np.linalg.det(J_3x3)
+    
+    # Set a threshold for singularity
+    e = 0.001
+    
+    # Check if the norm of the determinant is below the threshold
+    if abs(det_J) < e:
+        return True
+    else:
+        return False
+```
+## Prove คำตอบของคำถามข้อที่ 2 โดยการกำหนด q ในเคสที่เป็น Singularity และไม่เป็น Singularity 
+
+กำหนด q ในเคสที่เป็น Singularity และไม่เป็น Singularity เพื่อตรวจเช็คคำตอบของฟังก์ชัน checkSingularityHW3
+(และเพิ่มเติมการเปรียบเทียบกับผลของ Roboticstoolbox)
+
+#### check case of singularity
 
 ```python
 # check case of singularity
@@ -123,7 +155,14 @@ if np.isclose(determinant, 0, atol=0.001):
     print("singularity\n")
 else:
     print("not singularity\n")
+```
 
+Result
+<img width="579" alt="Screenshot 2567-10-13 at 12 53 45" src="https://github.com/user-attachments/assets/8a48cc28-22a9-4e62-b081-9b0c108b1a4e">
+
+#### check case of not singularity
+
+```python
 # check case of not singularity
 print("------check case of not singularity-------")
 q = [np.pi/4, np.pi/6, np.pi/3] # Define q that make robot not singularity
@@ -145,11 +184,12 @@ if np.isclose(determinant, 0, atol=0.001):
 else:
     print("not singularity\n")
 ```
-## Prove คำตอบของคำถามข้อที่ 2 โดยเปรียบเทียบกับการใช้ Jacobian ที่ได้จาก Roboticstoolbox จะได้ผลลัพธ์คือ
 
-![image](https://github.com/user-attachments/assets/fd0946b3-39d7-4962-9458-b0efb3faf589)
+Result
+<img width="557" alt="Screenshot 2567-10-13 at 12 56 03" src="https://github.com/user-attachments/assets/bd60aeb5-6836-4b46-bae7-2724f493ccba">
 
 จะเห็นได้ว่ามีผลลัพธ์ที่เหมือนกัน จึงสามารถสรุปได้ว่าฟังก์ชัน checkSingularityHW3(q) สามารถหาสภาวะ Singularity ของหุ่นยนต์ได้
+
 ----------------------------------------------------------------------------------------------------------------------------------------
 ## คำถามข้อที่ 3: เขียนฟังก์ชันในการหา effort ของแต่ละข้อต่อเมื่อมี wrench มากระทำกับจุดกึ่งกลางของเฟรมพิกัด Fe
 
@@ -166,7 +206,8 @@ tau = computeEffortHW3(q,w)
   
   w เป็นเวกเตอร์หลักของ double ที่มีขนาดเท่ากับ 6 ที่แสดงโมเมนท์และแรงที่อ้างอิงกับเฟรมพิกัด Fe
   
-ซึ่งการจะหา torque ได้นั้น Jacobian และ w ต้องมี reference frame เดียวกัน ซึ่งเราจะยึดตาม frame ของ Jacobian จึงต้องคูณ Rotation matrix ที่ frame e โดยอ้างอิง frame 0 จะได่้
+ซึ่งการจะหา torque ได้นั้น Jacobian และ w ต้องมี reference frame เดียวกัน ซึ่งเราจะยึดตาม frame ของ Jacobian นั่นคืออ้างอิงกับ Frame 0
+จึงต้อง Tranform w จากที่อ้างอิงกับ frame e ไปอ้างอิง frame 0 จะได้สมการ
 
 ![image](https://github.com/user-attachments/assets/ccd1d687-48e9-47d3-84af-f03bf3fe3e7f)
 
@@ -191,7 +232,7 @@ def computeEffortHW3(q:list[float], w:list[float])->list[float]:
 
     return tau
 ```
-## Prove คำตอบของคำถามข้อที่ 3 โดยเปรียบเทียบกับ Jacobian ที่ได้จาก Roboticstoolbox
+## Prove คำตอบของคำถามข้อที่ 3 โดยเปรียบเทียบกับ Torque ที่ได้จาก Roboticstoolbox
 
 เริ่มจากการกำหนดค่าให้กับ q และ w
 
@@ -199,7 +240,7 @@ q = [0,math.pi/2,0]
 
 w = [5,10,0,0,1,0]
   
-จากนั้นเขียนโปรแกรมเพื่อเปรียบเทียบค่า torque ที่ได้จากฟังก์ชัน jacobe(q) กับ torque ที่ได้จากฟังก์ชัน computeEffortHW3(q, w)
+จากนั้นเขียนโปรแกรมเพื่อเปรียบเทียบค่า torque ที่ได้จากฟังก์ชัน pay(q) ของ Roboticstoolbox กับ torque ที่ได้จากฟังก์ชัน computeEffortHW3(q, w)
 
 ```python
 # Calculate torques using computeEffortHW3 function
