@@ -158,6 +158,7 @@ else:
 ```
 
 Result
+
 <img width="579" alt="Screenshot 2567-10-13 at 12 53 45" src="https://github.com/user-attachments/assets/8a48cc28-22a9-4e62-b081-9b0c108b1a4e">
 
 #### check case of not singularity
@@ -186,6 +187,7 @@ else:
 ```
 
 Result
+
 <img width="557" alt="Screenshot 2567-10-13 at 12 56 03" src="https://github.com/user-attachments/assets/bd60aeb5-6836-4b46-bae7-2724f493ccba">
 
 จะเห็นได้ว่ามีผลลัพธ์ที่เหมือนกัน จึงสามารถสรุปได้ว่าฟังก์ชัน checkSingularityHW3(q) สามารถหาสภาวะ Singularity ของหุ่นยนต์ได้
